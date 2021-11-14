@@ -1,3 +1,4 @@
+import { IEvent } from './../shared/index';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
@@ -7,7 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class EventThumbnailComponent implements OnInit {
 
-  @Input() event: any;
+  @Input() event: IEvent;
 
   constructor() { }
 
