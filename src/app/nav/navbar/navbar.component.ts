@@ -1,3 +1,4 @@
+import { AuthService } from './../../user/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  // made auth public so we can use it in html
+  constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
   }

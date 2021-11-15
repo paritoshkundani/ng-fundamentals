@@ -1,3 +1,4 @@
+import { AuthService } from './user/auth.service';
 import { Error404Component } from './errors/not-found404/not-found404.component';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
@@ -40,7 +41,8 @@ import { NavbarComponent } from './nav/navbar/navbar.component';
     {
       provide: 'canDeactivateCreateEvent',
       useValue: checkDirtyState
-    }
+    },
+    AuthService
   ],
   bootstrap: [EventsAppComponent]
 })
