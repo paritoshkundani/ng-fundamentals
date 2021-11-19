@@ -14,7 +14,8 @@ import {
   EventThumbnailComponent,
   EventsListComponent,
   EventsListResolver,
-  CreateSessionComponent
+  CreateSessionComponent,
+  SessionListComponent
 } from './events/index' // getting from a barrel
 
 import { EventsAppComponent } from './events-app.component';
@@ -36,7 +37,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     EventDetailsComponent,
     CreateEventComponent,
     Error404Component,
-    CreateSessionComponent
+    CreateSessionComponent,
+    SessionListComponent
   ],
   providers: [
     EventService, // same as writing {provide: EventService, useValue: EventService}
