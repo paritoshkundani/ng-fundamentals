@@ -1,0 +1,9 @@
+<div (click)="toggleContent()" class="well pointable">
+  <h4>
+    <!-- ng-content will show whatever content the within the <collapsible-well>...</collapsible-well> with a class="title", can also use class="title" and select=".title" instead of attribute (used in session-list.component) -->
+    <ng-content select="[well-title]"></ng-content>
+  </h4>
+  <!-- ng-content will show whatever content the within the <collapsible-well>...</collapsible-well> with a class="body", can also use class="body" and select=".body" instead of attribute (used in session-list.component) -->
+  <ng-content *ngIf="visible" select="[well-body]"></ng-content>
+
+</div>
