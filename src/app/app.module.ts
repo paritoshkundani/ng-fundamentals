@@ -13,15 +13,19 @@ import {
   EventService,
   EventThumbnailComponent,
   EventsListComponent,
-  EventsListResolver
+  EventsListResolver,
+  CreateSessionComponent
 } from './events/index' // getting from a barrel
 
 import { EventsAppComponent } from './events-app.component';
 import { NavbarComponent } from './nav/navbar/navbar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
   ],
   declarations: [
@@ -31,7 +35,8 @@ import { NavbarComponent } from './nav/navbar/navbar.component';
     NavbarComponent,
     EventDetailsComponent,
     CreateEventComponent,
-    Error404Component
+    Error404Component,
+    CreateSessionComponent
   ],
   providers: [
     EventService, // same as writing {provide: EventService, useValue: EventService}
