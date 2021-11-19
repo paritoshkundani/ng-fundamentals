@@ -15,7 +15,8 @@ import {
   EventsListComponent,
   EventsListResolver,
   CreateSessionComponent,
-  SessionListComponent
+  SessionListComponent,
+  DurationPipe
 } from './events/index' // getting from a barrel
 
 import { EventsAppComponent } from './events-app.component';
@@ -40,7 +41,8 @@ import { CollapsibleWellComponent } from './common/collapsible-well.component';
     Error404Component,
     CreateSessionComponent,
     SessionListComponent,
-    CollapsibleWellComponent
+    CollapsibleWellComponent,
+    DurationPipe
   ],
   providers: [
     EventService, // same as writing {provide: EventService, useValue: EventService}
