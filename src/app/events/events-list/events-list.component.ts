@@ -1,4 +1,3 @@
-import { ToastrService } from './../../common/toastr.service';
 import { EventService } from './../shared/event.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -10,7 +9,7 @@ import { IEvent } from '../shared/index';
 export class EventsListComponent implements OnInit {
   events: IEvent[];
 
-  constructor(private eventService: EventService, private toastr: ToastrService, private route: ActivatedRoute) { }
+  constructor(private eventService: EventService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     // this.eventService.getEvents().subscribe(events => {
@@ -20,9 +19,4 @@ export class EventsListComponent implements OnInit {
     // can getting above with a resolver
     this.events = this.route.snapshot.data['events']; // 'events' comes from the route's resolve setup -> { path: 'events', component: EventsListComponent, resolve: {events: EventsListResolver} }
   }
-
-  handleThumbnailClick(eventName) {
-    this.toastr.success(eventName);
-  }
-
 }
