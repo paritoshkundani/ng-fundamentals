@@ -30,14 +30,26 @@
           </li>
         </ul>
       </div>
-      <form id="searchForm"  class="navbar-form navbar-right"  >
+      <form id="searchForm" (ngSubmit)="searchSessions(searchTerm)"  class="navbar-form navbar-right"  >
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search Sessions" >
+          <input type="text" class="form-control" placeholder="Search Sessions" [(ngModel)]="searchTerm" name="searchTerm" >
         </div>
-        <button class="btn btn-default" >
+        <!-- using directive modal-trigger we can attach new functionality to an existing element-->
+        <!-- in order to allow multiple modal-trigger (we only use 1 in sample) we need to give it the id of the modal it will work with, so pass that in -->
+        <button class="btn btn-default" modal-trigger="searchResults">
           Search
         </button>
       </form>
     </div>
   </div>
 </div>
+
+<!--
+  the routerlink below as a / in front as this will force it to look from the root, as the search results could be used
+  anywhere in the application, so we need to always make the route from the top of the application
+-->
+<simple-modal elementId="searchResults" closeOnBodyClick="true" title="Matching Sessions">
+  <div class="list-group">
+    <a class="list-group-item" *ngFor="let session of foundSessions" [routerLink]="['/events', session.eventId]">{{session.name}}</a>
+  </div>
+</simple-modal>

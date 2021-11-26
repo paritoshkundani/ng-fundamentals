@@ -1,6 +1,6 @@
 import { EventService } from './../shared/event.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { IEvent, ISession } from '../shared/index';
 
 @Component({
@@ -17,7 +17,14 @@ export class EventDetailsComponent implements OnInit {
   constructor(private eventService: EventService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.event = this.eventService.getEvent(+this.route.snapshot.params['id']);
+    // original way was using snapshot, but that does not update the content when route changes, we need to use observable way
+    // this.event = this.eventService.getEvent(+this.route.snapshot.params['id']);
+    this.route.params.forEach((params: Params) => {
+      this.event = this.eventService.getEvent(+params['id']);
+      this.addMode = false; // reset this as well, otherwise if addMode is true and you search and navigate to another event they will remain in previous state
+      this.filterBy = 'all';
+      this.sortBy = 'name';
+    });
   }
 
   addSession() {
