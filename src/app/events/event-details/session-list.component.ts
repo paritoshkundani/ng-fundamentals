@@ -1,3 +1,5 @@
+import { VoterService } from './voter.service';
+import { AuthService } from './../../user/auth.service';
 import { ISession } from './../shared/index';
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
 
@@ -13,7 +15,7 @@ export class SessionListComponent implements OnInit {
   @Input() sortBy: string;
   visibleSessions: ISession[] = []; // to avoid modifying the original list of sessions sent in, we modify this one, so we can always get the original back when filter 'All' is selected
 
-  constructor() { }
+  constructor(public auth : AuthService, private voterService: VoterService) { }
 
   ngOnInit(): void {
   }
@@ -36,6 +38,24 @@ export class SessionListComponent implements OnInit {
         return s.level.toLocaleLowerCase() === filter;
       });
     }
+  }
+
+  toggleVote(session: ISession) {
+    if (this.userHasVoted(session)) {
+      this.voterService.deleteVoter(session, this.auth.currentUser.userName);
+    }
+    else {
+      this.voterService.addVoter(session, this.auth.currentUser.userName);
+    }
+
+    // if it was sorted by votes redo sort as we just add/deleted votes
+    if (this.sortBy === 'votes') {
+      this.visibleSessions.sort(this.sortVotesDesc);
+    }
+  }
+
+  userHasVoted(session : ISession) {
+    return this.voterService.userHasVoted(session, this.auth.currentUser.userName);
   }
 
   sortByNameAsc(s1: ISession, s2: ISession) {

@@ -24,9 +24,11 @@
     </div>
 
     <!-- want address, city, country to be under location property-->
-    <div ngModelGroup="location">
+    <!-- validateLocation #locationGroup="ngModelGroup" is for location-validator -->
+    <div ngModelGroup="location" validateLocation #locationGroup="ngModelGroup">
       <div class="form-group">
         <label for="address">Event Location:</label>
+        <em *ngIf="locationGroup?.invalid && locationGroup?.touched">You must enter eitherthe full location OR an online Url</em>
         <input (ngModel)="newEvent.address" name="address" id="address" type="text" class="form-control" placeholder="Address of event..." />
       </div>
       <div class="row">
@@ -41,7 +43,15 @@
 
     <div class="form-group">
       <label for="onlineUrl">Online Url:</label>
-      <input (ngModel)="newEvent.onlineUrl" name="onlineUrl" id="onlineUrl" type="text" class="form-control" placeholder="Online Url..." />
+      <!--
+        using change event to trigger the location-validator which is setup in the sibling group above
+        since it's in the above group it will not trigger for this field unless we force it to
+        locationGroup is the #locationGroup from above div
+      -->
+      <input (ngModel)="newEvent.onlineUrl" name="onlineUrl" id="onlineUrl"
+        type="text" class="form-control" placeholder="Online Url..."
+        (change)="locationGroup.control.controls.address.updateValueAndValidity()"
+        />
     </div>
     <div class="form-group" [ngClass]="{'error': newEventForm.controls.imageUrl?.invalid && newEventForm.controls.imageUrl?.touched}">
       <label for="imageUrl">Image:</label>
@@ -51,7 +61,7 @@
       <img [src]="newEventForm.controls.imageUrl.value" *ngIf="newEventForm.controls.imageUrl?.valid" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    <button type="button" [disabled]="newEventForm.invalid" class="btn btn-default" (click)="cancel()">Cancel</button>
+    <button type="submit" [disabled]="newEventForm.invalid" class="btn btn-primary">Save</button>
+    <button type="button" class="btn btn-default" (click)="cancel()">Cancel</button>
   </form>
 </div>
