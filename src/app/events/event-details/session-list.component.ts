@@ -13,6 +13,7 @@ export class SessionListComponent implements OnInit {
   @Input() sessions: ISession[];
   @Input() filterBy: string;
   @Input() sortBy: string;
+  @Input() eventId: number;
   visibleSessions: ISession[] = []; // to avoid modifying the original list of sessions sent in, we modify this one, so we can always get the original back when filter 'All' is selected
 
   constructor(public auth : AuthService, private voterService: VoterService) { }
@@ -42,10 +43,10 @@ export class SessionListComponent implements OnInit {
 
   toggleVote(session: ISession) {
     if (this.userHasVoted(session)) {
-      this.voterService.deleteVoter(session, this.auth.currentUser.userName);
+      this.voterService.deleteVoter(this.eventId, session, this.auth.currentUser.userName);
     }
     else {
-      this.voterService.addVoter(session, this.auth.currentUser.userName);
+      this.voterService.addVoter(this.eventId, session, this.auth.currentUser.userName);
     }
 
     // if it was sorted by votes redo sort as we just add/deleted votes

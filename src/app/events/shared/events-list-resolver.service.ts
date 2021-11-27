@@ -11,7 +11,7 @@ export class EventsListResolver implements Resolve<any> {
   constructor(private eventService: EventService) { }
 
   resolve() {
-    // typically we would call subscribe on getEvents() as that is an Observable, but because this is a Resolver we need to return the observable
-    return this.eventService.getEvents().pipe(map(events => events));
+    // typically we would call subscribe on getEvents() as that is an Observable, but because this is a Resolver we need to return the observable, it will call subscribe automatically in Resolvers
+    return this.eventService.getEvents();
   }
 }

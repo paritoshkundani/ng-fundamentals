@@ -19,8 +19,8 @@ export class EventDetailsComponent implements OnInit {
   ngOnInit(): void {
     // original way was using snapshot, but that does not update the content when route changes, we need to use observable way
     // this.event = this.eventService.getEvent(+this.route.snapshot.params['id']);
-    this.route.params.forEach((params: Params) => {
-      this.event = this.eventService.getEvent(+params['id']);
+    this.route.data.forEach((data) => {
+      this.event = data['event']; // getting from EventResolver
       this.addMode = false; // reset this as well, otherwise if addMode is true and you search and navigate to another event they will remain in previous state
       this.filterBy = 'all';
       this.sortBy = 'name';
@@ -36,7 +36,7 @@ export class EventDetailsComponent implements OnInit {
 
     session.id = nextId + 1;
     this.event.sessions.push(session);
-    this.eventService.updateEvent(this.event);
+    this.eventService.saveEvent(this.event).subscribe();
     this.addMode = false;
   }
 

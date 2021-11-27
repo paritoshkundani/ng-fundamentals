@@ -1,64 +1,59 @@
 import { IEvent, ISession } from './event.model';
 import { EventEmitter, Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   getEvents() : Observable<IEvent[]> {
+    return this.http.get<IEvent[]>('/api/events')
+      .pipe(catchError(this.handleError<IEvent[]>('getEvents', [])));
+    /*
     let subject = new Subject<IEvent[]>();  // Subject is of type Observable
     setTimeout(() => {
       subject.next(EVENTS);
       subject.complete();
     }, 100);
     return subject;
+    */
   }
 
-  getEvent(id:number) : IEvent {
-    return EVENTS.find(event => event.id === id);
+  getEvent(id:number) : Observable<IEvent> {
+    //return EVENTS.find(event => event.id === id);
+    return this.http.get<IEvent>('/api/events/' + id)
+    .pipe(catchError(this.handleError<IEvent>('getEvent')));
   }
 
+  // save event api handles both create (no id) and updated (if id exists)
+  // here if we did a put, it takes the same params as post, just <put> instead. their api does post for both
   saveEvent(event: IEvent) {
-    event.id = 999;
-    event.sessions = [];
-    EVENTS.push(event);
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post<IEvent>('/api/events', event, options).pipe(catchError(this.handleError<IEvent>('saveEvent')));
+    // event.id = 999;
+    // event.sessions = [];
+    // EVENTS.push(event);
   }
 
-  updateEvent(event) {
-    let index = EVENTS.findIndex(x => x.id == event.id);
-    EVENTS[index] = event;
+  searchSessions(searchTerm: string) : Observable<ISession[]> {
+    return this.http.get<ISession[]>('/api/sessions/search?search=' + searchTerm)
+    .pipe(catchError(this.handleError<ISession[]>('searchSessions')));
   }
 
-  searchSessions(searchTerm: string) {
-    var term = searchTerm.toLocaleLowerCase();
-    var results: ISession[] = [];
-
-    EVENTS.forEach(event => {
-      var matchingSessions = event.sessions.filter(session =>
-        session.name.toLocaleLowerCase().indexOf(term) > -1
-      );
-
-      // we need eventId also, but it's not in sessions, it's outside it so rebuild the matchingSessions
-      // array (which only has Sessions) and include it from the event it's connected to
-      matchingSessions = matchingSessions.map((session:any) => {
-        session.eventId = event.id;
-        return session;
-      });
-      results = results.concat(matchingSessions);
-    });
-
-    // use event emitter to return an observable
-    var emitter = new EventEmitter(true); // true means return as async
-
-    // using timeout to simulate a slight delay
-    setTimeout(() => {
-      emitter.emit(results);
-    }, 100);
-    return emitter;
+  private handleError<T> (operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      return of(result as T);
+    }
   }
 }
 

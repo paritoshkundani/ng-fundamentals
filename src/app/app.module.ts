@@ -1,3 +1,4 @@
+import { EventsResolver } from './events/shared/event.resolver.service';
 import { AuthService } from './user/auth.service';
 import { Error404Component } from './errors/not-found404/not-found404.component';
 import { RouterModule } from '@angular/router';
@@ -8,7 +9,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import {
   CreateEventComponent,
   EventDetailsComponent,
-  EventRouteActivator,
   EventService,
   EventThumbnailComponent,
   EventsListComponent,
@@ -33,6 +33,7 @@ import {
 import { EventsAppComponent } from './events-app.component';
 import { NavbarComponent } from './nav/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 let toastr : Toastr = window['toastr'];
 let jQuery = window['$'];
@@ -42,6 +43,7 @@ let jQuery = window['$'];
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     RouterModule.forRoot(appRoutes)
   ],
   declarations: [
@@ -71,8 +73,8 @@ let jQuery = window['$'];
       provide: JQ_TOKEN,
       useValue: jQuery
     },
-    EventRouteActivator,
     EventsListResolver,
+    EventsResolver,
     {
       provide: 'canDeactivateCreateEvent',
       useValue: checkDirtyState

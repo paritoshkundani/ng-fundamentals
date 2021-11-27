@@ -1,0 +1,7 @@
+In order to get the HTTP chapter to work, after installing the ngf-server make sure to do a ng build otherwise will get an error that it can't find some index.html file in the dist folder
+http://localhost:8808/api/events
+if still not working, try to run cmd as admin and make sure the proxy.conf.json has localhost spelled correctly
+
+for login use
+username:johnpapa
+password anything is ok
